@@ -5,6 +5,11 @@
  */
 package yazlab1;
 
+import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author MehmetFirat
@@ -27,21 +32,276 @@ public class NewUserScreen extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        usernametf = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        passwordtf = new javax.swing.JTextField();
+        locationtf = new javax.swing.JTextField();
+        agetf = new javax.swing.JTextField();
+        passwordatf = new javax.swing.JTextField();
+        newusersubmitbtn = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        usernamealreadywrn = new java.awt.Label();
+        usrnamewrn = new java.awt.Label();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(707, 432));
+        setResizable(false);
+        addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                formMouseMoved(evt);
+            }
+        });
+
+        jLabel1.setText("Welcome to the club new reader!");
+
+        jLabel2.setText("Username");
+
+        usernametf.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                usernametfActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("Password");
+
+        jLabel4.setText("Password Again");
+
+        jLabel5.setText("Location(town-city-country)");
+
+        jLabel6.setText("Age");
+
+        passwordtf.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                passwordtfActionPerformed(evt);
+            }
+        });
+
+        locationtf.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                locationtfActionPerformed(evt);
+            }
+        });
+
+        agetf.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                agetfActionPerformed(evt);
+            }
+        });
+
+        passwordatf.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                passwordatfActionPerformed(evt);
+            }
+        });
+
+        newusersubmitbtn.setText("Submit");
+        newusersubmitbtn.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                newusersubmitbtnMouseMoved(evt);
+            }
+        });
+        newusersubmitbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newusersubmitbtnActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("Back");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setForeground(new java.awt.Color(255, 0, 0));
+        jLabel7.setText("* You need to fill all requests.");
+
+        usernamealreadywrn.setForeground(new java.awt.Color(255, 0, 0));
+        usernamealreadywrn.setText("*such a username already exists");
+        usernamealreadywrn.setVisible(false);
+
+        usrnamewrn.setForeground(new java.awt.Color(255, 0, 0));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(38, 38, 38)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel7)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addGap(203, 203, 203)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(locationtf, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(agetf, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(passwordatf, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(passwordtf, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(usernametf, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(usrnamewrn, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(newusersubmitbtn))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(usernamealreadywrn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(98, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(32, 32, 32)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(usernametf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(usrnamewrn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(usernamealreadywrn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(20, 20, 20)))
+                .addGap(28, 28, 28)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(passwordtf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(passwordatf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(21, 21, 21)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(locationtf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(29, 29, 29)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(agetf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(9, 9, 9)
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(newusersubmitbtn)
+                    .addComponent(jButton2))
+                .addContainerGap(47, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void usernametfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usernametfActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_usernametfActionPerformed
+
+    private void passwordtfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordtfActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_passwordtfActionPerformed
+
+    private void locationtfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_locationtfActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_locationtfActionPerformed
+
+    private void agetfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agetfActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_agetfActionPerformed
+
+    private void passwordatfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordatfActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_passwordatfActionPerformed
+
+    private void newusersubmitbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newusersubmitbtnActionPerformed
+        try {
+            // TODO add your handling code here:
+            final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
+            Class.forName("com.mysql.jdbc.Driver");
+            String host = "jdbc:mysql://localhost:3301/yazlab1?useLegacyDatetimeCode=false&serverTimezone=America/New_York";
+            String uName = "root";
+            String uPass = "";
+            Connection conn = DriverManager.getConnection(host, uName, uPass);
+            Statement stmt = conn.createStatement();
+            String query = "SELECT username FROM bx_user_information";
+            ResultSet rs = stmt.executeQuery(query);
+            boolean alreadyFlag = false;
+            while(rs.next()){
+                String usrsql = rs.getString("username");
+                if(usrsql.equals(usernametf.getText())){
+                    usrnamewrn.setText(" *such a username already exists ");
+                    alreadyFlag = true;
+                    break;
+                }
+            }
+            if(alreadyFlag == false){
+                if(passwordtf.getText().equals(passwordatf.getText()) == true){
+                    try{
+                        if(Integer.parseInt(agetf.getText()) > 0){
+                            String insertquery = String.format("INSERT INTO bx_user_information(username, password) "
+                                    + "VALUES('%s', '%s')", usernametf.getText(), passwordtf.getText());
+                            stmt.executeUpdate(insertquery);
+                            String getIdUsersql = String.format("SELECT user_id FROM bx_user_information where username = '%s'",
+                                                   usernametf.getText());
+                            ResultSet useridsql = stmt.executeQuery(getIdUsersql);
+                            useridsql.next();
+                            System.out.println(useridsql.getString("user_id"));
+                            String insertquery2 = String.format("INSERT INTO bx_users(user_id,location, age) "
+                                + "VALUES('%s','%s', '%s')", useridsql.getString("user_id"),locationtf.getText(), agetf.getText());
+                        stmt.executeUpdate(insertquery2);
+                        JOptionPane.showMessageDialog(null, "Congrulations, You have been successfully registered");
+                        dispose();
+                        new LogInScreen().setVisible(true);
+                        }
+                        else{
+                            JOptionPane.showMessageDialog(null, "Age is not a valid number");
+                        }
+                    }catch(NumberFormatException e){
+                        JOptionPane.showMessageDialog(null, "Age is not a valid number");
+                    }
+                
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "Passwords are not the same, please check again.");
+                }
+            }
+            rs.close();
+            conn.close();
+        } catch (SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(NewUserScreen.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_newusersubmitbtnActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        dispose();
+        new LogInScreen().setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void newusersubmitbtnMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_newusersubmitbtnMouseMoved
+        // TODO add your handling code here:
+        if(usernametf.getText().isEmpty() == true || passwordtf.getText().isEmpty() == true
+                || passwordatf.getText().isEmpty() == true || locationtf.getText().isEmpty() == true
+                || agetf.getText().isEmpty() == true){
+            newusersubmitbtn.setEnabled(false);
+        }else{
+            newusersubmitbtn.setEnabled(true);
+        }
+    }//GEN-LAST:event_newusersubmitbtnMouseMoved
+
+    private void formMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseMoved
+        // TODO add your handling code here:
+    }//GEN-LAST:event_formMouseMoved
 
     /**
      * @param args the command line arguments
@@ -69,7 +329,7 @@ public class NewUserScreen extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(NewUserScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -79,5 +339,21 @@ public class NewUserScreen extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField agetf;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JTextField locationtf;
+    private javax.swing.JButton newusersubmitbtn;
+    private javax.swing.JTextField passwordatf;
+    private javax.swing.JTextField passwordtf;
+    private java.awt.Label usernamealreadywrn;
+    private javax.swing.JTextField usernametf;
+    private java.awt.Label usrnamewrn;
     // End of variables declaration//GEN-END:variables
 }
