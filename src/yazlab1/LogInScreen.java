@@ -40,7 +40,7 @@ public class LogInScreen extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         Header.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
-        Header.setText("Welcome to The Mighty Library");
+        Header.setText("Welcome to The Supreme Library");
 
         jLabel1.setText("Password");
 
