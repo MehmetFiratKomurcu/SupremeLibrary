@@ -225,52 +225,46 @@ public class NewUserScreen extends javax.swing.JFrame {
     private void newusersubmitbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newusersubmitbtnActionPerformed
         try {
             // TODO add your handling code here:
-            final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-            Class.forName("com.mysql.jdbc.Driver");
-            String host = "jdbc:mysql://localhost:3301/yazlab1?useLegacyDatetimeCode=false&serverTimezone=America/New_York";
-            String uName = "root";
-            String uPass = "";
-            Connection conn = DriverManager.getConnection(host, uName, uPass);
+            YazLab1 yazlab = new YazLab1();
+            Connection conn = DriverManager.getConnection(yazlab.getHost(), yazlab.getUName(), yazlab.getUPass());
             Statement stmt = conn.createStatement();
             String query = "SELECT username FROM bx_user_information";
             ResultSet rs = stmt.executeQuery(query);
             boolean alreadyFlag = false;
-            while(rs.next()){
+            while (rs.next()) {
                 String usrsql = rs.getString("username");
-                if(usrsql.equals(usernametf.getText())){
+                if (usrsql.equals(usernametf.getText())) {
                     usrnamewrn.setText(" *such a username already exists ");
                     alreadyFlag = true;
                     break;
                 }
             }
-            if(alreadyFlag == false){
-                if(passwordtf.getText().equals(passwordatf.getText()) == true){
-                    try{
-                        if(Integer.parseInt(agetf.getText()) > 0){
+            if (alreadyFlag == false) {
+                if (passwordtf.getText().equals(passwordatf.getText()) == true) {
+                    try {
+                        if (Integer.parseInt(agetf.getText()) > 0) {
                             String insertquery = String.format("INSERT INTO bx_user_information(username, password) "
                                     + "VALUES('%s', '%s')", usernametf.getText(), passwordtf.getText());
                             stmt.executeUpdate(insertquery);
                             String getIdUsersql = String.format("SELECT user_id FROM bx_user_information where username = '%s'",
-                                                   usernametf.getText());
+                                    usernametf.getText());
                             ResultSet useridsql = stmt.executeQuery(getIdUsersql);
                             useridsql.next();
                             System.out.println(useridsql.getString("user_id"));
                             String insertquery2 = String.format("INSERT INTO bx_users(user_id,location, age) "
-                                + "VALUES('%s','%s', '%s')", useridsql.getString("user_id"),locationtf.getText(), agetf.getText());
-                        stmt.executeUpdate(insertquery2);
-                        JOptionPane.showMessageDialog(null, "Congrulations, You have been successfully registered");
-                        dispose();
-                        new LogInScreen().setVisible(true);
-                        }
-                        else{
+                                    + "VALUES('%s','%s', '%s')", useridsql.getString("user_id"), locationtf.getText(), agetf.getText());
+                            stmt.executeUpdate(insertquery2);
+                            JOptionPane.showMessageDialog(null, "Congrulations, You have been successfully registered");
+                            dispose();
+                            new LogInScreen().setVisible(true);
+                        } else {
                             JOptionPane.showMessageDialog(null, "Age is not a valid number");
                         }
-                    }catch(NumberFormatException e){
+                    } catch (NumberFormatException e) {
                         JOptionPane.showMessageDialog(null, "Age is not a valid number");
                     }
-                
-                }
-                else{
+
+                } else {
                     JOptionPane.showMessageDialog(null, "Passwords are not the same, please check again.");
                 }
             }
@@ -279,7 +273,7 @@ public class NewUserScreen extends javax.swing.JFrame {
         } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(NewUserScreen.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }//GEN-LAST:event_newusersubmitbtnActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -290,11 +284,11 @@ public class NewUserScreen extends javax.swing.JFrame {
 
     private void newusersubmitbtnMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_newusersubmitbtnMouseMoved
         // TODO add your handling code here:
-        if(usernametf.getText().isEmpty() == true || passwordtf.getText().isEmpty() == true
+        if (usernametf.getText().isEmpty() == true || passwordtf.getText().isEmpty() == true
                 || passwordatf.getText().isEmpty() == true || locationtf.getText().isEmpty() == true
-                || agetf.getText().isEmpty() == true){
+                || agetf.getText().isEmpty() == true) {
             newusersubmitbtn.setEnabled(false);
-        }else{
+        } else {
             newusersubmitbtn.setEnabled(true);
         }
     }//GEN-LAST:event_newusersubmitbtnMouseMoved
@@ -329,7 +323,7 @@ public class NewUserScreen extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(NewUserScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        
+
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

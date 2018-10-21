@@ -132,12 +132,8 @@ public class ForgotPasswordScreen extends javax.swing.JFrame {
         // TODO add your handling code here:
         if(newpasswordtf.getText().equals(newpasswordatf.getText())){
             try{
-                final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-                Class.forName("com.mysql.jdbc.Driver");
-                String host = "jdbc:mysql://localhost:3301/yazlab1?useLegacyDatetimeCode=false&serverTimezone=America/New_York";
-                String uName = "root";
-                String uPass = "";
-                Connection conn = DriverManager.getConnection(host, uName, uPass);
+                YazLab1 yazlab = new YazLab1();
+                Connection conn = DriverManager.getConnection(yazlab.getHost(), yazlab.getUName(), yazlab.getUPass());
                 Statement stmt = conn.createStatement();
                 String query = "SELECT username FROM bx_user_information";
                 ResultSet rs = stmt.executeQuery(query);
