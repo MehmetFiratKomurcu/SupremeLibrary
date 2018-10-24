@@ -18,7 +18,7 @@ public class YazLab1 {
     public YazLab1() throws ClassNotFoundException {
         final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
         Class.forName("com.mysql.jdbc.Driver");
-        host = "jdbc:mysql://localhost:3306/yazlab1?useLegacyDatetimeCode=false&serverTimezone=America/New_York";
+        host = "jdbc:mysql://localhost:3301/yazlab1?useLegacyDatetimeCode=false&serverTimezone=America/New_York";
         uName = "root";
         uPass = "";
     }

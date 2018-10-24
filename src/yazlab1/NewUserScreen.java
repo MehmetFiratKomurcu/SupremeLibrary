@@ -19,10 +19,15 @@ public class NewUserScreen extends javax.swing.JFrame {
     /**
      * Creates new form NewUserScreen
      */
+    public String usernameGlobal = "";
+    public String passwordGlobal ="";
+    public String locationGlobal = "";
+    public int ageGlobal = 1;
+            
     public NewUserScreen() {
         initComponents();
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -50,7 +55,6 @@ public class NewUserScreen extends javax.swing.JFrame {
         usrnamewrn = new java.awt.Label();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(707, 432));
         setResizable(false);
         addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseMoved(java.awt.event.MouseEvent evt) {
@@ -100,7 +104,7 @@ public class NewUserScreen extends javax.swing.JFrame {
             }
         });
 
-        newusersubmitbtn.setText("Submit");
+        newusersubmitbtn.setText("Next");
         newusersubmitbtn.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseMoved(java.awt.event.MouseEvent evt) {
                 newusersubmitbtnMouseMoved(evt);
@@ -228,7 +232,7 @@ public class NewUserScreen extends javax.swing.JFrame {
             YazLab1 yazlab = new YazLab1();
             Connection conn = DriverManager.getConnection(yazlab.getHost(), yazlab.getUName(), yazlab.getUPass());
             Statement stmt = conn.createStatement();
-            String query = "SELECT username FROM bx_user_information";
+            String query = "SELECT username FROM bx_users";
             ResultSet rs = stmt.executeQuery(query);
             boolean alreadyFlag = false;
             while (rs.next()) {
@@ -243,20 +247,23 @@ public class NewUserScreen extends javax.swing.JFrame {
                 if (passwordtf.getText().equals(passwordatf.getText()) == true) {
                     try {
                         if (Integer.parseInt(agetf.getText()) > 0) {
-                            String insertquery = String.format("INSERT INTO bx_user_information(username, password) "
-                                    + "VALUES('%s', '%s')", usernametf.getText(), passwordtf.getText());
-                            stmt.executeUpdate(insertquery);
-                            String getIdUsersql = String.format("SELECT user_id FROM bx_user_information where username = '%s'",
-                                    usernametf.getText());
-                            ResultSet useridsql = stmt.executeQuery(getIdUsersql);
-                            useridsql.next();
-                            System.out.println(useridsql.getString("user_id"));
-                            String insertquery2 = String.format("INSERT INTO bx_users(user_id,location, age) "
-                                    + "VALUES('%s','%s', '%s')", useridsql.getString("user_id"), locationtf.getText(), agetf.getText());
-                            stmt.executeUpdate(insertquery2);
-                            JOptionPane.showMessageDialog(null, "Congrulations, You have been successfully registered");
-                            dispose();
-                            new LogInScreen().setVisible(true);
+                              this.setVisible(false);
+                              new Select10BooksScreen(usernametf.getText(),passwordtf.getText(),
+                              locationtf.getText(),Integer.parseInt(agetf.getText())).setVisible(true);
+//                            String insertquery = String.format("INSERT INTO bx_user_information(username, password) "
+//                                    + "VALUES('%s', '%s')", usernametf.getText(), passwordtf.getText());
+//                            stmt.executeUpdate(insertquery);
+//                            String getIdUsersql = String.format("SELECT user_id FROM bx_user_information where username = '%s'",
+//                                    usernametf.getText());
+//                            ResultSet useridsql = stmt.executeQuery(getIdUsersql);
+//                            useridsql.next();
+//                            System.out.println(useridsql.getString("user_id"));
+//                            String insertquery2 = String.format("INSERT INTO bx_users(user_id,location, age) "
+//                                    + "VALUES('%s','%s', '%s')", useridsql.getString("user_id"), locationtf.getText(), agetf.getText());
+//                            stmt.executeUpdate(insertquery2);
+//                            JOptionPane.showMessageDialog(null, "Congrulations, You have been successfully registered");
+//                              dispose();
+//                              new LogInScreen().setVisible(true);
                         } else {
                             JOptionPane.showMessageDialog(null, "Age is not a valid number");
                         }
@@ -278,10 +285,12 @@ public class NewUserScreen extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        dispose();
+        this.setVisible(false);
         new LogInScreen().setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
-
+    public String getUsernameGlobal(){
+        return usernametf.getText();
+    }
     private void newusersubmitbtnMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_newusersubmitbtnMouseMoved
         // TODO add your handling code here:
         if (usernametf.getText().isEmpty() == true || passwordtf.getText().isEmpty() == true
@@ -333,7 +342,7 @@ public class NewUserScreen extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField agetf;
+    protected javax.swing.JTextField agetf;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -342,12 +351,12 @@ public class NewUserScreen extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JTextField locationtf;
+    protected javax.swing.JTextField locationtf;
     private javax.swing.JButton newusersubmitbtn;
     private javax.swing.JTextField passwordatf;
-    private javax.swing.JTextField passwordtf;
+    protected javax.swing.JTextField passwordtf;
     private java.awt.Label usernamealreadywrn;
-    private javax.swing.JTextField usernametf;
+    protected javax.swing.JTextField usernametf;
     private java.awt.Label usrnamewrn;
     // End of variables declaration//GEN-END:variables
 }
