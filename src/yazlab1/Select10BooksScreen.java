@@ -221,16 +221,14 @@ public class Select10BooksScreen extends javax.swing.JFrame {
                     + bookSearch + "%'";
             //System.out.println(bookQuery);
             ResultSet rs = stmt.executeQuery(bookQuery);
-            if(rs.next()){
+            
                 while(rs.next()){
                     model.addRow(new Object[]{rs.getString("isbn"), rs.getString("book_title"),
                             rs.getString("book_author"), rs.getString("year_of_publication"),
                             rs.getString("publisher")});
                     System.out.println(rs.getString("isbn"));
                 }
-            }else{
-                JOptionPane.showMessageDialog(null, "olmadı hacı");
-            }
+            
             rs.close();
             conn.close();
         }catch(HeadlessException | ClassNotFoundException | SQLException e){
