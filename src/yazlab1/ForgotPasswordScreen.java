@@ -135,7 +135,7 @@ public class ForgotPasswordScreen extends javax.swing.JFrame {
                 YazLab1 yazlab = new YazLab1();
                 Connection conn = DriverManager.getConnection(yazlab.getHost(), yazlab.getUName(), yazlab.getUPass());
                 Statement stmt = conn.createStatement();
-                String query = "SELECT username FROM bx_user_information";
+                String query = "SELECT username FROM bx_users";
                 ResultSet rs = stmt.executeQuery(query);
                 boolean SqlUserFlag = false;
                 while(rs.next()){
@@ -143,7 +143,7 @@ public class ForgotPasswordScreen extends javax.swing.JFrame {
                     if(usrsql.equals(usernametf.getText())){
                         SqlUserFlag = true;
                         Statement stmt2 = conn.createStatement();
-                        String newPassSqlStr = String.format("UPDATE bx_user_information SET "
+                        String newPassSqlStr = String.format("UPDATE bx_users SET "
                                 + "password = '%s' WHERE username = '%s'", newpasswordtf.getText(),
                                 usernametf.getText());
                         stmt2.executeUpdate(newPassSqlStr);
