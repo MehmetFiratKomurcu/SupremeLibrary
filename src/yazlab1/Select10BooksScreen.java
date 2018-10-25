@@ -64,7 +64,7 @@ public class Select10BooksScreen extends javax.swing.JFrame {
         Select10BooksTable = new javax.swing.JTable();
         bookSearchbtn = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        LogInScreenBtn = new javax.swing.JButton();
         starComboBox = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
 
@@ -129,7 +129,12 @@ public class Select10BooksScreen extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Login Screen");
+        LogInScreenBtn.setText("Login Screen");
+        LogInScreenBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LogInScreenBtnActionPerformed(evt);
+            }
+        });
 
         starComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " ", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" }));
         starComboBox.addActionListener(new java.awt.event.ActionListener() {
@@ -160,7 +165,7 @@ public class Select10BooksScreen extends javax.swing.JFrame {
                 .addContainerGap(24, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton2)
+                .addComponent(LogInScreenBtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel3)
                 .addGap(65, 65, 65)
@@ -184,7 +189,7 @@ public class Select10BooksScreen extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
-                    .addComponent(jButton2)
+                    .addComponent(LogInScreenBtn)
                     .addComponent(starComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
                 .addContainerGap(19, Short.MAX_VALUE))
@@ -301,6 +306,12 @@ public class Select10BooksScreen extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void LogInScreenBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LogInScreenBtnActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+        new LogInScreen().setVisible(true);
+    }//GEN-LAST:event_LogInScreenBtnActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -338,11 +349,11 @@ public class Select10BooksScreen extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton LogInScreenBtn;
     private javax.swing.JTable Select10BooksTable;
     private javax.swing.JButton bookSearchbtn;
     private javax.swing.JTextField booktf;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
