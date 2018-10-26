@@ -5,6 +5,8 @@
  */
 package yazlab1;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -25,6 +27,8 @@ public class AddBook extends javax.swing.JFrame {
      */
     public AddBook() {
         initComponents();
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
     }
 
     /**
@@ -88,21 +92,21 @@ public class AddBook extends javax.swing.JFrame {
             }
         });
 
-        addbtn.setText("Kaydet");
+        addbtn.setText("Save");
         addbtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addbtnActionPerformed(evt);
             }
         });
 
-        clearbtn.setText("Temizle");
+        clearbtn.setText("Clear");
         clearbtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clearbtnActionPerformed(evt);
             }
         });
 
-        backbtn.setText("Geri");
+        backbtn.setText("Back");
         backbtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 backbtnActionPerformed(evt);
@@ -225,12 +229,12 @@ public class AddBook extends javax.swing.JFrame {
                         + "VALUES('%s','%s', '%s','%s', '%s', '%s', '%s', '%s')", isbntf.getText(), booktitletf.getText(), bookauthortf.getText(),
                         yearofpuclicationtf.getText(), publishertf.getText(), urlstf.getText(), urlmtf.getText(), urlltf.getText());
                 int insertFlag = stmt.executeUpdate(insertQuery);
-                if(insertFlag == 1){
+                if (insertFlag == 1) {
                     String selectQuery = String.format("SELECT count(*) as row FROM bx_last_added_books");
                     Statement stmt2 = conn.createStatement();
                     ResultSet rs = stmt2.executeQuery(selectQuery);
-                    while(rs.next()){
-                        if(Integer.parseInt(rs.getString("row")) >= 5) {
+                    while (rs.next()) {
+                        if (Integer.parseInt(rs.getString("row")) >= 5) {
                             System.out.println(rs.getString("row"));
                             String deleteQuery = String.format("DELETE FROM bx_last_added_books LIMIT 1");
                             stmt.executeUpdate(deleteQuery);
@@ -242,8 +246,8 @@ public class AddBook extends javax.swing.JFrame {
                     stmt3.executeUpdate(insertQuery);
                 }
                 conn.close();
-            }else{
-                JOptionPane.showMessageDialog(null,"Boş alan bırakmayınız.");
+            } else {
+                JOptionPane.showMessageDialog(null, "Boş alan bırakmayınız.");
             }
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(AddBook.class.getName()).log(Level.SEVERE, null, ex);

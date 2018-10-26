@@ -5,6 +5,8 @@
  */
 package yazlab1;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,14 +22,16 @@ public class NewUserScreen extends javax.swing.JFrame {
      * Creates new form NewUserScreen
      */
     public String usernameGlobal = "";
-    public String passwordGlobal ="";
+    public String passwordGlobal = "";
     public String locationGlobal = "";
     public int ageGlobal = 1;
-            
+
     public NewUserScreen() {
         initComponents();
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -247,9 +251,9 @@ public class NewUserScreen extends javax.swing.JFrame {
                 if (passwordtf.getText().equals(passwordatf.getText()) == true) {
                     try {
                         if (Integer.parseInt(agetf.getText()) > 0) {
-                              this.setVisible(false);
-                              new Select10BooksScreen(usernametf.getText(),passwordtf.getText(),
-                              locationtf.getText(),Integer.parseInt(agetf.getText())).setVisible(true);
+                            this.setVisible(false);
+                            new Select10BooksScreen(usernametf.getText(), passwordtf.getText(),
+                                    locationtf.getText(), Integer.parseInt(agetf.getText())).setVisible(true);
 //                            String insertquery = String.format("INSERT INTO bx_user_information(username, password) "
 //                                    + "VALUES('%s', '%s')", usernametf.getText(), passwordtf.getText());
 //                            stmt.executeUpdate(insertquery);
@@ -288,7 +292,7 @@ public class NewUserScreen extends javax.swing.JFrame {
         this.setVisible(false);
         new LogInScreen().setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
-    public String getUsernameGlobal(){
+    public String getUsernameGlobal() {
         return usernametf.getText();
     }
     private void newusersubmitbtnMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_newusersubmitbtnMouseMoved

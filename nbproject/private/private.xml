@@ -5,10 +5,13 @@
         <group>
             <file>file:/D:/Java%20Projects/SupremeLibrary/src/yazlab1/YazLab1.java</file>
             <file>file:/D:/Java%20Projects/SupremeLibrary/src/yazlab1/Select10BooksScreen.java</file>
-            <file>file:/D:/Java%20Projects/SupremeLibrary/src/yazlab1/LogInScreen.java</file>
+            <file>file:/D:/Java%20Projects/SupremeLibrary/src/yazlab1/MainPage.java</file>
             <file>file:/D:/Java%20Projects/SupremeLibrary/src/yazlab1/AdminPanel.java</file>
+            <file>file:/D:/Java%20Projects/SupremeLibrary/src/yazlab1/BookDetails.java</file>
             <file>file:/D:/Java%20Projects/SupremeLibrary/src/yazlab1/NewUserScreen.java</file>
             <file>file:/D:/Java%20Projects/SupremeLibrary/src/yazlab1/ForgotPasswordScreen.java</file>
+            <file>file:/D:/Java%20Projects/SupremeLibrary/src/yazlab1/AddBook.java</file>
+            <file>file:/D:/Java%20Projects/SupremeLibrary/src/yazlab1/ReadBook.java</file>
         </group>
     </open-files>
 </project-private>

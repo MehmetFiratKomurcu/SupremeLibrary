@@ -5,6 +5,8 @@
  */
 package yazlab1;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -23,6 +25,8 @@ public class ForgotPasswordScreen extends javax.swing.JFrame {
      */
     public ForgotPasswordScreen() {
         initComponents();
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
     }
 
     /**
@@ -130,17 +134,17 @@ public class ForgotPasswordScreen extends javax.swing.JFrame {
 
     private void forgotpasswordbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forgotpasswordbtnActionPerformed
         // TODO add your handling code here:
-        if(newpasswordtf.getText().equals(newpasswordatf.getText())){
-            try{
+        if (newpasswordtf.getText().equals(newpasswordatf.getText())) {
+            try {
                 YazLab1 yazlab = new YazLab1();
                 Connection conn = DriverManager.getConnection(yazlab.getHost(), yazlab.getUName(), yazlab.getUPass());
                 Statement stmt = conn.createStatement();
                 String query = "SELECT username FROM bx_users";
                 ResultSet rs = stmt.executeQuery(query);
                 boolean SqlUserFlag = false;
-                while(rs.next()){
+                while (rs.next()) {
                     String usrsql = rs.getString("username");
-                    if(usrsql.equals(usernametf.getText())){
+                    if (usrsql.equals(usernametf.getText())) {
                         SqlUserFlag = true;
                         Statement stmt2 = conn.createStatement();
                         String newPassSqlStr = String.format("UPDATE bx_users SET "
@@ -150,25 +154,25 @@ public class ForgotPasswordScreen extends javax.swing.JFrame {
                         JOptionPane.showMessageDialog(null, "Password changed successfully");
                     }
                 }
-                if(SqlUserFlag == false){
+                if (SqlUserFlag == false) {
                     JOptionPane.showMessageDialog(null, "no such username");
                 }
                 rs.close();
                 conn.close();
-            }catch(ClassNotFoundException | SQLException e){
+            } catch (ClassNotFoundException | SQLException e) {
                 System.out.println(e.getMessage());
             }
-        }else{
+        } else {
             JOptionPane.showMessageDialog(null, "Passwords are not same, please check again.");
         }
     }//GEN-LAST:event_forgotpasswordbtnActionPerformed
 
     private void forgotpasswordbtnMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_forgotpasswordbtnMouseMoved
         // TODO add your handling code here:
-        if(usernametf.getText().isEmpty() == true || newpasswordtf.getText().isEmpty() == true
-                || newpasswordatf.getText().isEmpty()){
+        if (usernametf.getText().isEmpty() == true || newpasswordtf.getText().isEmpty() == true
+                || newpasswordatf.getText().isEmpty()) {
             forgotpasswordbtn.setEnabled(false);
-        }else{
+        } else {
             forgotpasswordbtn.setEnabled(true);
         }
     }//GEN-LAST:event_forgotpasswordbtnMouseMoved

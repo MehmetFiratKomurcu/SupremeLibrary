@@ -200,7 +200,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="addbtn">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Kaydet"/>
+        <Property name="text" type="java.lang.String" value="Save"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addbtnActionPerformed"/>
@@ -208,7 +208,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="clearbtn">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Temizle"/>
+        <Property name="text" type="java.lang.String" value="Clear"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="clearbtnActionPerformed"/>
@@ -216,7 +216,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="backbtn">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Geri"/>
+        <Property name="text" type="java.lang.String" value="Back"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="backbtnActionPerformed"/>

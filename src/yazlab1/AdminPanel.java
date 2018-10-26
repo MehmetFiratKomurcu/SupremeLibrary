@@ -5,6 +5,8 @@
  */
 package yazlab1;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -27,6 +29,8 @@ public class AdminPanel extends javax.swing.JFrame {
      */
     public AdminPanel() {
         initComponents();
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
     }
 
     /**
@@ -52,7 +56,7 @@ public class AdminPanel extends javax.swing.JFrame {
 
         buttonGroup1.add(userrb);
         userrb.setSelected(true);
-        userrb.setText("Kullanici Ara");
+        userrb.setText("Search User");
         userrb.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 userrbActionPerformed(evt);
@@ -60,7 +64,7 @@ public class AdminPanel extends javax.swing.JFrame {
         });
 
         buttonGroup1.add(bookrb);
-        bookrb.setText("Kitap Ara");
+        bookrb.setText("Search Book");
         bookrb.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bookrbActionPerformed(evt);
@@ -80,21 +84,21 @@ public class AdminPanel extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(searchtbl);
 
-        searchbtn.setText("Ara");
+        searchbtn.setText("Search");
         searchbtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 searchbtnActionPerformed(evt);
             }
         });
 
-        deletebtn.setText("Sil");
+        deletebtn.setText("Delete");
         deletebtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deletebtnActionPerformed(evt);
             }
         });
 
-        addbookbtn.setText("Yeni Kitap Ekle");
+        addbookbtn.setText("Add New Book");
         addbookbtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addbookbtnActionPerformed(evt);
@@ -162,7 +166,7 @@ public class AdminPanel extends javax.swing.JFrame {
     private void bookrbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookrbActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_bookrbActionPerformed
-    
+
 
     private void searchbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchbtnActionPerformed
         // TODO add your handling code here:
@@ -186,13 +190,13 @@ public class AdminPanel extends javax.swing.JFrame {
                         + searchtf.getText() + "%' OR isbn LIKE '%" + searchtf.getText() + "%'";
                 ResultSet rs = stmt.executeQuery(searchQuery);
                 System.out.println(searchQuery);
-                
+
                 while (rs.next()) {
                     model.addRow(new Object[]{rs.getString("isbn"), rs.getString("book_title"),
                         rs.getString("book_author"), rs.getString("year_of_publication"),
                         rs.getString("publisher")});
                 }
-                
+
                 rs.close();
                 conn.close();
             } else if (userrb.isSelected()) {
@@ -205,13 +209,13 @@ public class AdminPanel extends javax.swing.JFrame {
                         + searchtf.getText() + "%'";
                 ResultSet rs = stmt.executeQuery(searchQuery);
                 System.out.println(searchQuery);
-                
+
                 while (rs.next()) {
                     model.addRow(new Object[]{rs.getString("user_id"), rs.getString("username"),
                         rs.getString("location"), rs.getString("age")});
-                    
+
                 }
-                
+
                 rs.close();
                 conn.close();
             }
@@ -220,7 +224,7 @@ public class AdminPanel extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(AdminPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
 
     }//GEN-LAST:event_searchbtnActionPerformed
 
@@ -305,7 +309,7 @@ public class AdminPanel extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new AdminPanel().setVisible(true);
-                
+
             }
         });
     }

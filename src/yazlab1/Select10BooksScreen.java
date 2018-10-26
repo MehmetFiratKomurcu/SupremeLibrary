@@ -5,7 +5,9 @@
  */
 package yazlab1;
 
+import java.awt.Dimension;
 import java.awt.HeadlessException;
+import java.awt.Toolkit;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -26,25 +28,31 @@ import javax.swing.table.TableCellEditor;
  * @author MehmetFirat
  */
 public class Select10BooksScreen extends javax.swing.JFrame {
+
     ArrayList<String[]> bookAndStar = new ArrayList<String[]>();
+
     /**
      * Creates new form Select10BooksScreen
      */
     public Select10BooksScreen() {
         initComponents();
-        
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
+
     }
     String username = "";
     String password = "";
     String location = "";
     int age = 1;
-    public Select10BooksScreen(String username,String password,String location,int age){
+
+    public Select10BooksScreen(String username, String password, String location, int age) {
         initComponents();
         this.username = username;
         this.password = password;
         this.location = location;
         this.age = age;
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -200,19 +208,19 @@ public class Select10BooksScreen extends javax.swing.JFrame {
 
     private void bookSearchbtnMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bookSearchbtnMouseMoved
         // TODO add your handling code here:
-        if(booktf.getText().equals("")){
+        if (booktf.getText().equals("")) {
             bookSearchbtn.setEnabled(false);
-        }else{
+        } else {
             bookSearchbtn.setEnabled(true);
         }
     }//GEN-LAST:event_bookSearchbtnMouseMoved
-    
+
     private void bookSearchbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bookSearchbtnMouseClicked
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel) Select10BooksTable.getModel();
         model.setRowCount(0);
         String bookSearch = booktf.getText();
-        try{
+        try {
             YazLab1 yazlab = new YazLab1();
             Connection conn = DriverManager.getConnection(yazlab.getHost(), yazlab.getUName(), yazlab.getUPass());
             Statement stmt = conn.createStatement();
@@ -221,20 +229,20 @@ public class Select10BooksScreen extends javax.swing.JFrame {
                     + bookSearch + "%'";
             //System.out.println(bookQuery);
             ResultSet rs = stmt.executeQuery(bookQuery);
-            
-                while(rs.next()){
-                    model.addRow(new Object[]{rs.getString("isbn"), rs.getString("book_title"),
-                            rs.getString("book_author"), rs.getString("year_of_publication"),
-                            rs.getString("publisher")});
-                    System.out.println(rs.getString("isbn"));
-                }
-            
+
+            while (rs.next()) {
+                model.addRow(new Object[]{rs.getString("isbn"), rs.getString("book_title"),
+                    rs.getString("book_author"), rs.getString("year_of_publication"),
+                    rs.getString("publisher")});
+                System.out.println(rs.getString("isbn"));
+            }
+
             rs.close();
             conn.close();
-        }catch(HeadlessException | ClassNotFoundException | SQLException e){
+        } catch (HeadlessException | ClassNotFoundException | SQLException e) {
             System.out.println(e.getMessage());
         }
-        
+
     }//GEN-LAST:event_bookSearchbtnMouseClicked
 
     private void bookSearchbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookSearchbtnActionPerformed
@@ -244,20 +252,20 @@ public class Select10BooksScreen extends javax.swing.JFrame {
     private void jButton1MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseMoved
         // TODO add your handling code here:
 
-        
+
     }//GEN-LAST:event_jButton1MouseMoved
 
     private void starComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_starComboBoxActionPerformed
         // TODO add your handling code here:
         String starValue = starComboBox.getSelectedItem().toString();
-        String [] bookStarPair = new String[2];
+        String[] bookStarPair = new String[2];
         int selectedRow = Select10BooksTable.getSelectedRow();
-        bookStarPair[0] =(String)Select10BooksTable.getValueAt(selectedRow, 0);
+        bookStarPair[0] = (String) Select10BooksTable.getValueAt(selectedRow, 0);
         bookStarPair[1] = starValue;
-        if(!bookAndStar.contains(bookStarPair)){
+        if (!bookAndStar.contains(bookStarPair)) {
             bookAndStar.add(bookStarPair);
         }
-        
+
     }//GEN-LAST:event_starComboBoxActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -268,17 +276,17 @@ public class Select10BooksScreen extends javax.swing.JFrame {
             Connection conn = DriverManager.getConnection(yazlab.getHost(), yazlab.getUName(), yazlab.getUPass());
             Statement stmt = conn.createStatement();
             Statement stmt2 = conn.createStatement();
-            if(Select10BooksTable.getSelectedRow() == -1){
+            if (Select10BooksTable.getSelectedRow() == -1) {
                 JOptionPane.showMessageDialog(null, "You haven't selected any book");
-            }else{
-                if(bookAndStar.size() < 10){
+            } else {
+                if (bookAndStar.size() < 10) {
                     JOptionPane.showMessageDialog(null, "You have to select 10 books at least");
-                }else{
+                } else {
                     String insertquery = String.format("INSERT INTO bx_users(user_id,location,age,username,password) "
-                                    + "VALUES('%d','%s', '%s','%s', '%s')",generator.nextInt(),location,age, username, password);
+                            + "VALUES('%d','%s', '%s','%s', '%s')", generator.nextInt(), location, age, username, password);
                     stmt.executeUpdate(insertquery);
                     String getIdUsersql = String.format("SELECT user_id FROM bx_users where username = '%s'",
-                    username);
+                            username);
                     ResultSet useridsql = stmt.executeQuery(getIdUsersql);
                     useridsql.next();
                     //System.out.println(useridsql.getString("user_id"));
@@ -286,10 +294,10 @@ public class Select10BooksScreen extends javax.swing.JFrame {
                     //                    + "VALUES('%s','%s', '%s')", useridsql.getString("user_id"), locationtf.getText(), agetf.getText());
                     //stmt.executeUpdate(insertquery2);
                     //System.out.println(bookAndStar.get(1).toString());
-                    for(String[] pairValues:bookAndStar){
+                    for (String[] pairValues : bookAndStar) {
                         String insertQuery2 = String.format("INSERT INTO bx_book_ratings (user_id,isbn,book_rating)"
-                                            + "VALUES('%d','%s','%d')", Integer.parseInt(useridsql.getString("user_id")),
-                                            pairValues[0],Integer.parseInt(pairValues[1]));
+                                + "VALUES('%d','%s','%d')", Integer.parseInt(useridsql.getString("user_id")),
+                                pairValues[0], Integer.parseInt(pairValues[1]));
                         System.out.println(insertQuery2);
                         stmt2.addBatch(insertQuery2);
                     }
