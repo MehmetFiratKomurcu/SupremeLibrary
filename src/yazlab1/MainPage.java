@@ -44,6 +44,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -56,16 +57,22 @@ public class MainPage extends javax.swing.JFrame {
      */
     ArrayList<String[]> isbnAndRatings = new ArrayList<String[]>();
     static double mainRowSize = 10.0;
+    JTable recoveryMainTable;
 
-    public MainPage() {
+    public MainPage() throws SQLException {
         initComponents();
-        String path = "https://cdn0.iconfinder.com/data/icons/gloss-basic-icons-by-momentum/32/arrow-refresh.png";
+        String refreshPath = "https://cdn0.iconfinder.com/data/icons/gloss-basic-icons-by-momentum/32/arrow-refresh.png";
+        String homePath = "https://www.iconfinder.com/icons/3440837/download/png/32";
         URL url;
         try {
-            url = new URL(path);
+            url = new URL(refreshPath);
             BufferedImage image = ImageIO.read(url);
             ImageIcon icon = new ImageIcon(image);
             refreshlbl.setIcon(icon);
+            url = new URL(homePath);
+            image = ImageIO.read(url);
+            icon = new ImageIcon(image);
+            homelbl.setIcon(icon);
         } catch (MalformedURLException ex) {
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -81,6 +88,7 @@ public class MainPage extends javax.swing.JFrame {
         MyItemListener actionListener = new MyItemListener();
         pagecb.addItemListener(actionListener);
         search();
+        recommendedBooks();
     }
 
     public void search() {
@@ -88,6 +96,7 @@ public class MainPage extends javax.swing.JFrame {
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     try {
+                        recommendlbl.setText("Search results for '" + searchtf.getText() + "'.");
                         DefaultTableModel model = (DefaultTableModel) MainTable.getModel();
                         model.setNumRows(0);
                         pagecb.removeAllItems();
@@ -187,6 +196,67 @@ public class MainPage extends javax.swing.JFrame {
             } else if (evt.getStateChange() == ItemEvent.DESELECTED) {
                 // Item is no longer selected
             }
+        }
+    }
+
+    public void recommendedBooks() throws SQLException {
+        try {
+            BookRecommender recommend = new BookRecommender();
+            ArrayList<Integer> booksToRecommend = new ArrayList<Integer>();
+            for (int i = 0; i < 10; i++) {
+                for (int j = 0; j < recommend.getData().length; j++) {
+                    if (recommend.getResultsOfCosineValues().get(i).user_id == recommend.getData()[j].user_id) {
+                        for (int k = 0; k < recommend.getData()[j].book_id.size(); k++) {
+                            booksToRecommend.add(recommend.getData()[j].book_id.get(k));
+                        }
+                    }
+                }
+            }
+            for (int i = 0; i < booksToRecommend.size(); i++) {
+                System.out.println("Book to recommend: " + booksToRecommend.get(i));
+            }
+            YazLab1 yazlab = new YazLab1();
+            Connection conn = DriverManager.getConnection(yazlab.getHost(), yazlab.getUName(), yazlab.getUPass());
+            Statement stmt = conn.createStatement();
+            String query = "SELECT book_id FROM bx_books";
+            ResultSet rs = stmt.executeQuery(query);
+            Statement stmt2 = conn.createStatement();
+            DefaultTableModel model = (DefaultTableModel) MainTable.getModel();
+            int bookCounter = 0;
+            while (rs.next()) {
+                int bookIdValue = rs.getInt("book_id");
+                if (booksToRecommend.contains(bookIdValue) && bookCounter < 20) {
+                    String imageQuery = String.format("SELECT isbn,book_title,book_author,image_url_s FROM bx_books "
+                            + "WHERE book_id = '%s'", bookIdValue);
+
+//                    System.out.println(imageQuery);
+                    ResultSet rs2 = stmt2.executeQuery(imageQuery);
+                    rs2.next();
+                    URL url;
+                    try {
+                        url = new URL(rs2.getString("image_url_s"));
+                        BufferedImage img = ImageIO.read(url);
+                        ImageIcon icon = new ImageIcon(img);
+                        JLabel lbl = new JLabel();
+                        lbl.setIcon(icon);
+                        model.addRow(new Object[]{rs2.getString("isbn"), rs2.getString("book_title"), rs2.getString("book_author"), lbl});
+                    } catch (MalformedURLException ex) {
+                        Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (IOException ex) {
+                        Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    MainTable.getColumn("Title").setCellRenderer(new WordWrapCellRenderer());
+                    MainTable.getColumn("Image").setCellRenderer(new LabelRenderer());
+                    MainTable.getColumnModel().getColumn(0).setMinWidth(0);
+                    MainTable.getColumnModel().getColumn(0).setMaxWidth(0);
+                    rs2.close();
+                    bookCounter++;
+                }
+            }
+            rs.close();
+            conn.close();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -445,6 +515,7 @@ public class MainPage extends javax.swing.JFrame {
         recommendlbl = new javax.swing.JLabel();
         pagecb = new javax.swing.JComboBox<>();
         refreshlbl = new javax.swing.JLabel();
+        homelbl = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -556,6 +627,18 @@ public class MainPage extends javax.swing.JFrame {
             }
         });
 
+        homelbl.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                homelblMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                homelblMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                homelblMouseExited(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -591,6 +674,8 @@ public class MainPage extends javax.swing.JFrame {
                             .addComponent(jLabel3)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(refreshlbl, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(homelbl, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -598,9 +683,10 @@ public class MainPage extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(23, 23, 23)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(searchtf, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(refreshlbl, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(searchtf)
+                    .addComponent(refreshlbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(homelbl, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(recommendlbl)
@@ -642,8 +728,26 @@ public class MainPage extends javax.swing.JFrame {
     private void refreshlblMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_refreshlblMouseExited
         // TODO add your handling code here:
         refreshlbl.setOpaque(false);
-        refreshlbl.setBackground(new Color(240,240,240));
+        refreshlbl.setBackground(new Color(240, 240, 240));
     }//GEN-LAST:event_refreshlblMouseExited
+
+    private void homelblMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homelblMouseEntered
+        // TODO add your handling code here:
+        homelbl.setOpaque(true);
+        homelbl.setBackground(new Color(253, 255, 229));
+    }//GEN-LAST:event_homelblMouseEntered
+
+    private void homelblMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homelblMouseExited
+        // TODO add your handling code here:
+        homelbl.setOpaque(false);
+        homelbl.setBackground(new Color(240, 240, 240));
+    }//GEN-LAST:event_homelblMouseExited
+
+    private void homelblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homelblMouseClicked
+        // TODO add your handling code here:
+        
+        System.out.println("tıklandı");
+    }//GEN-LAST:event_homelblMouseClicked
 
     /**
      * @param args the command line arguments
@@ -676,7 +780,11 @@ public class MainPage extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new MainPage().setVisible(true);
+                try {
+                    new MainPage().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
@@ -686,6 +794,7 @@ public class MainPage extends javax.swing.JFrame {
     private javax.swing.JTable MainTable;
     private javax.swing.JTable NewBooksTable;
     private javax.swing.JTable PopularBooksTable;
+    private javax.swing.JLabel homelbl;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

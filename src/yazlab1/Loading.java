@@ -32,16 +32,15 @@ public class Loading extends javax.swing.JFrame {
         this.setVisible(true);
         SwingWorker sw = new SwingWorker() {
 
-            MainPage main;
-
             @Override
             protected Object doInBackground() throws Exception {
                 jProgressBar1.setIndeterminate(true);
                 jLabel1.setHorizontalAlignment(SwingConstants.CENTER);
-                main = new MainPage();
+                MainPage main = new MainPage();
                 done();
                 Thread.sleep(2000);
                 main.setVisible(true);
+                dispose();
                 return null;
             }
 

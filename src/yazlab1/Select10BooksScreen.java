@@ -272,7 +272,6 @@ public class Select10BooksScreen extends javax.swing.JFrame {
         try {
             // TODO add your handling code here:
             YazLab1 yazlab = new YazLab1();
-            Random generator = new Random();
             Connection conn = DriverManager.getConnection(yazlab.getHost(), yazlab.getUName(), yazlab.getUPass());
             Statement stmt = conn.createStatement();
             Statement stmt2 = conn.createStatement();
@@ -282,8 +281,8 @@ public class Select10BooksScreen extends javax.swing.JFrame {
                 if (bookAndStar.size() < 10) {
                     JOptionPane.showMessageDialog(null, "You have to select 10 books at least");
                 } else {
-                    String insertquery = String.format("INSERT INTO bx_users(user_id,location,age,username,password) "
-                            + "VALUES('%d','%s', '%s','%s', '%s')", generator.nextInt(), location, age, username, password);
+                    String insertquery = String.format("INSERT INTO bx_users(location,age,username,password) "
+                            + "VALUES('%s', '%s','%s', '%s')", location, age, username, password);
                     stmt.executeUpdate(insertquery);
                     String getIdUsersql = String.format("SELECT user_id FROM bx_users where username = '%s'",
                             username);

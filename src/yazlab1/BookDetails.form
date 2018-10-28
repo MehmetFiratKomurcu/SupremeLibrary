@@ -3,6 +3,9 @@
 <Form version="1.9" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
+    <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+      <Dimension value="[830, 285]"/>
+    </Property>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -34,9 +37,9 @@
                       </Group>
                       <EmptySpace min="-2" pref="55" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="isbntf" pref="500" max="32767" attributes="0"/>
-                          <Component id="booktitletf" max="32767" attributes="0"/>
-                          <Component id="bookauthortf" max="32767" attributes="0"/>
+                          <Component id="isbntf" min="-2" pref="500" max="-2" attributes="0"/>
+                          <Component id="booktitletf" min="-2" pref="500" max="-2" attributes="0"/>
+                          <Component id="bookauthortf" min="-2" pref="500" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
@@ -46,11 +49,11 @@
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="yearofpublicationtf" max="32767" attributes="0"/>
-                          <Component id="publishertf" max="32767" attributes="0"/>
+                          <Component id="yearofpublicationtf" min="-2" pref="500" max="-2" attributes="0"/>
+                          <Component id="publishertf" min="-2" pref="500" max="-2" attributes="0"/>
                           <Group type="102" alignment="1" attributes="0">
                               <Component id="backbtn" min="-2" pref="116" max="-2" attributes="0"/>
-                              <EmptySpace pref="264" max="32767" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
                               <Component id="readbtn" min="-2" pref="120" max="-2" attributes="0"/>
                           </Group>
                       </Group>

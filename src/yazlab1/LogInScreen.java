@@ -25,10 +25,18 @@ public class LogInScreen extends javax.swing.JFrame {
     /**
      * Creates new form LogInScreen
      */
+    private static int user_id = 17;
     public LogInScreen() {
         initComponents();
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
+    }
+    
+    public void setUserId(int id){
+        user_id = id;
+    }
+    public static int getUserId(){
+        return user_id;
     }
 
     /**
@@ -165,7 +173,7 @@ public class LogInScreen extends javax.swing.JFrame {
                 YazLab1 yazlab = new YazLab1();
                 Connection conn = DriverManager.getConnection(yazlab.getHost(), yazlab.getUName(), yazlab.getUPass());
                 Statement stmt = conn.createStatement();
-                String bookQuery = String.format("SELECT count(*) FROM bx_users WHERE username = '%s' AND password = '%s'"
+                String bookQuery = String.format("SELECT count(*),user_id FROM bx_users WHERE username = '%s' AND password = '%s'"
                         , usernametf.getText(), passwordtf.getText());
                 //System.out.println(bookQuery);
                 ResultSet rs = stmt.executeQuery(bookQuery);
@@ -173,6 +181,7 @@ public class LogInScreen extends javax.swing.JFrame {
                 while (rs.next()) {
                     if(rs.getInt("count(*)") >= 1){
                         userFlag = true;
+                        setUserId(rs.getInt("user_id"));
                     }
                 }
                 
