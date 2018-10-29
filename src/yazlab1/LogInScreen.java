@@ -25,7 +25,7 @@ public class LogInScreen extends javax.swing.JFrame {
     /**
      * Creates new form LogInScreen
      */
-    private static int user_id = 17;
+    private static int user_id = 278862;
     public LogInScreen() {
         initComponents();
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();

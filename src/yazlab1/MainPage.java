@@ -5,6 +5,7 @@
  */
 package yazlab1;
 
+import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -61,23 +62,15 @@ public class MainPage extends javax.swing.JFrame {
 
     public MainPage() throws SQLException {
         initComponents();
-        String refreshPath = "https://cdn0.iconfinder.com/data/icons/gloss-basic-icons-by-momentum/32/arrow-refresh.png";
-        String homePath = "https://www.iconfinder.com/icons/3440837/download/png/32";
-        URL url;
-        try {
-            url = new URL(refreshPath);
-            BufferedImage image = ImageIO.read(url);
-            ImageIcon icon = new ImageIcon(image);
-            refreshlbl.setIcon(icon);
-            url = new URL(homePath);
-            image = ImageIO.read(url);
-            icon = new ImageIcon(image);
-            homelbl.setIcon(icon);
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        String refreshPath = "img/refresh.png";
+        String homePath = "img/home.png";
+        String logOffPath = "img/logoff.png";
+        ImageIcon icon = new ImageIcon(refreshPath);
+        refreshlbl.setIcon(icon);
+        icon = new ImageIcon(homePath);
+        homelbl.setIcon(icon);
+        icon = new ImageIcon(logOffPath);
+        logofflbl.setIcon(icon);
 
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
@@ -89,7 +82,11 @@ public class MainPage extends javax.swing.JFrame {
         pagecb.addItemListener(actionListener);
         search();
         recommendedBooks();
+        RecommendTable.setLayout(new BorderLayout());
+        jScrollPane2.setViewportView(RecommendTable);
+        jScrollPane5.setVisible(false);
     }
+
 
     public void search() {
         searchtf.addKeyListener(new KeyAdapter() {
@@ -115,6 +112,8 @@ public class MainPage extends javax.swing.JFrame {
                         for (int i = 1; i <= sumPage; i++) {
                             pagecb.addItem(Integer.toString(i));
                         }
+                        jScrollPane2.setViewportView(MainTable);
+                        jScrollPane5.setVisible(false);
                     } catch (ClassNotFoundException ex) {
                         Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (SQLException ex) {
@@ -203,7 +202,7 @@ public class MainPage extends javax.swing.JFrame {
         try {
             BookRecommender recommend = new BookRecommender();
             ArrayList<Integer> booksToRecommend = new ArrayList<Integer>();
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0;i < recommend.getResultsOfCosineValues().size(); i++) {
                 for (int j = 0; j < recommend.getData().length; j++) {
                     if (recommend.getResultsOfCosineValues().get(i).user_id == recommend.getData()[j].user_id) {
                         for (int k = 0; k < recommend.getData()[j].book_id.size(); k++) {
@@ -212,6 +211,7 @@ public class MainPage extends javax.swing.JFrame {
                     }
                 }
             }
+            System.out.println("recommend size: " + booksToRecommend.size());
             for (int i = 0; i < booksToRecommend.size(); i++) {
                 System.out.println("Book to recommend: " + booksToRecommend.get(i));
             }
@@ -221,7 +221,7 @@ public class MainPage extends javax.swing.JFrame {
             String query = "SELECT book_id FROM bx_books";
             ResultSet rs = stmt.executeQuery(query);
             Statement stmt2 = conn.createStatement();
-            DefaultTableModel model = (DefaultTableModel) MainTable.getModel();
+            DefaultTableModel model = (DefaultTableModel) RecommendTable.getModel();
             int bookCounter = 0;
             while (rs.next()) {
                 int bookIdValue = rs.getInt("book_id");
@@ -245,10 +245,10 @@ public class MainPage extends javax.swing.JFrame {
                     } catch (IOException ex) {
                         Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    MainTable.getColumn("Title").setCellRenderer(new WordWrapCellRenderer());
-                    MainTable.getColumn("Image").setCellRenderer(new LabelRenderer());
-                    MainTable.getColumnModel().getColumn(0).setMinWidth(0);
-                    MainTable.getColumnModel().getColumn(0).setMaxWidth(0);
+                    RecommendTable.getColumn("Title").setCellRenderer(new WordWrapCellRenderer());
+                    RecommendTable.getColumn("Image").setCellRenderer(new LabelRenderer());
+                    RecommendTable.getColumnModel().getColumn(0).setMinWidth(0);
+                    RecommendTable.getColumnModel().getColumn(0).setMaxWidth(0);
                     rs2.close();
                     bookCounter++;
                 }
@@ -258,6 +258,27 @@ public class MainPage extends javax.swing.JFrame {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+        RecommendTable.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent mouseEvent) {
+                JTable table = (JTable) mouseEvent.getSource();
+                Point point = mouseEvent.getPoint();
+                int row = table.rowAtPoint(point);
+                if (mouseEvent.getClickCount() == 2 && table.getSelectedRow() != -1) {
+                    String selectedIsbn = RecommendTable.getValueAt(row, 0).toString();
+                    setVisible(false);
+                    try {
+                        new BookDetails(selectedIsbn).setVisible(true);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ClassNotFoundException ex) {
+                        Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (IOException ex) {
+                        Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        });
     }
 
     public void new5Books() {
@@ -474,6 +495,7 @@ public class MainPage extends javax.swing.JFrame {
             PopularBooksTable.setRowHeight(100);
             NewBooksTable.setRowHeight(100);
             MainTable.setRowHeight(100);
+            RecommendTable.setRowHeight(100);
             return (Component) value;
         }
     }
@@ -516,6 +538,9 @@ public class MainPage extends javax.swing.JFrame {
         pagecb = new javax.swing.JComboBox<>();
         refreshlbl = new javax.swing.JLabel();
         homelbl = new javax.swing.JLabel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        RecommendTable = new javax.swing.JTable();
+        logofflbl = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -639,6 +664,36 @@ public class MainPage extends javax.swing.JFrame {
             }
         });
 
+        RecommendTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ISBN", "Title", "Author", "Image"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane5.setViewportView(RecommendTable);
+
+        logofflbl.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logofflblMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                logofflblMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                logofflblMouseExited(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -647,7 +702,8 @@ public class MainPage extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                    .addComponent(jLabel1)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -676,17 +732,20 @@ public class MainPage extends javax.swing.JFrame {
                         .addComponent(refreshlbl, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(homelbl, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(logofflbl, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(searchtf)
-                    .addComponent(refreshlbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(homelbl, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(searchtf, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(refreshlbl, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(homelbl, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(logofflbl, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(recommendlbl)
@@ -705,6 +764,9 @@ public class MainPage extends javax.swing.JFrame {
                         .addGap(0, 5, Short.MAX_VALUE)))
                 .addContainerGap())
         );
+
+        getAccessibleContext().setAccessibleName("frame1");
+        getAccessibleContext().setAccessibleDescription("");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -745,9 +807,28 @@ public class MainPage extends javax.swing.JFrame {
 
     private void homelblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homelblMouseClicked
         // TODO add your handling code here:
-        
-        System.out.println("tıklandı");
+        RecommendTable.setLayout(new BorderLayout());
+        jScrollPane2.setViewportView(RecommendTable);
+        jScrollPane5.setVisible(false);
+        recommendlbl.setText("Recommended Books For You:");
     }//GEN-LAST:event_homelblMouseClicked
+
+    private void logofflblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logofflblMouseClicked
+        // TODO add your handling code here:
+        System.exit(0);
+    }//GEN-LAST:event_logofflblMouseClicked
+
+    private void logofflblMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logofflblMouseEntered
+        // TODO add your handling code here:
+        logofflbl.setOpaque(true);
+        logofflbl.setBackground(new Color(253, 255, 229));
+    }//GEN-LAST:event_logofflblMouseEntered
+
+    private void logofflblMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logofflblMouseExited
+        // TODO add your handling code here:
+        logofflbl.setOpaque(false);
+        logofflbl.setBackground(new Color(240, 240, 240));
+    }//GEN-LAST:event_logofflblMouseExited
 
     /**
      * @param args the command line arguments
@@ -790,21 +871,24 @@ public class MainPage extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTable BestBooksTable;
-    private javax.swing.JTable MainTable;
-    private javax.swing.JTable NewBooksTable;
-    private javax.swing.JTable PopularBooksTable;
-    private javax.swing.JLabel homelbl;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JComboBox<String> pagecb;
-    private javax.swing.JLabel recommendlbl;
-    private javax.swing.JLabel refreshlbl;
-    private javax.swing.JTextField searchtf;
+    javax.swing.JTable BestBooksTable;
+    javax.swing.JTable MainTable;
+    javax.swing.JTable NewBooksTable;
+    javax.swing.JTable PopularBooksTable;
+    javax.swing.JTable RecommendTable;
+    javax.swing.JLabel homelbl;
+    javax.swing.JLabel jLabel1;
+    javax.swing.JLabel jLabel2;
+    javax.swing.JLabel jLabel3;
+    javax.swing.JScrollPane jScrollPane1;
+    javax.swing.JScrollPane jScrollPane2;
+    javax.swing.JScrollPane jScrollPane3;
+    javax.swing.JScrollPane jScrollPane4;
+    javax.swing.JScrollPane jScrollPane5;
+    javax.swing.JLabel logofflbl;
+    javax.swing.JComboBox<String> pagecb;
+    javax.swing.JLabel recommendlbl;
+    javax.swing.JLabel refreshlbl;
+    javax.swing.JTextField searchtf;
     // End of variables declaration//GEN-END:variables
 }

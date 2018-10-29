@@ -69,17 +69,9 @@ public class BookRecommender {
             YazLab1 yazlab = new YazLab1();
             Connection conn = DriverManager.getConnection(yazlab.getHost(), yazlab.getUName(), yazlab.getUPass());
             Statement stmt = conn.createStatement();
-            String countryQuery = String.format("SELECT location FROM bx_users WHERE user_id = '%s'", LogInScreen.getUserId());
-            System.out.println(countryQuery);
-            ResultSet rs = stmt.executeQuery(countryQuery);
-            rs.next();
-            String locationStr = rs.getString("location");
-            String[] tokens = locationStr.split(",");
-
-            //String queryForCount = "SELECT count(*) FROM bx_users WHERE location LIKE '%" + tokens[2] + "%'";
             String queryForCount = "SELECT count(distinct(ratings.user_id)) as countUserId FROM bx_book_ratings as ratings, bx_books as books,"
                     + "bx_users as users WHERE ratings.isbn = books.isbn AND users.user_id = ratings.user_id";
-            rs = stmt.executeQuery(queryForCount);
+            ResultSet rs = stmt.executeQuery(queryForCount);
             rs.next();
             int dataSize = rs.getInt("countUserId");
 //            System.out.println(dataSize);

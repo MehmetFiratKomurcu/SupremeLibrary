@@ -51,6 +51,8 @@ public class Select10BooksScreen extends javax.swing.JFrame {
         this.password = password;
         this.location = location;
         this.age = age;
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
     }
 
     /**
@@ -262,9 +264,18 @@ public class Select10BooksScreen extends javax.swing.JFrame {
         int selectedRow = Select10BooksTable.getSelectedRow();
         bookStarPair[0] = (String) Select10BooksTable.getValueAt(selectedRow, 0);
         bookStarPair[1] = starValue;
-        if (!bookAndStar.contains(bookStarPair)) {
+        boolean addFlag = true;
+        for (int i = 0; i < bookAndStar.size(); i++) {
+            if(bookAndStar.get(i)[0].equals(bookStarPair[0])){
+               addFlag = false;
+            }
+        }
+        if(addFlag != false && bookStarPair[1] != " "){
             bookAndStar.add(bookStarPair);
         }
+//        if (!bookAndStar.contains(bookStarPair)) {
+//            bookAndStar.add(bookStarPair);
+//        }
 
     }//GEN-LAST:event_starComboBoxActionPerformed
 

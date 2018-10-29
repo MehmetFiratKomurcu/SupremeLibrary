@@ -25,6 +25,7 @@ public class Loading extends javax.swing.JFrame {
     /**
      * Creates new form Loading
      */
+    static MainPage main;
     public Loading() {
         initComponents();
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -36,7 +37,7 @@ public class Loading extends javax.swing.JFrame {
             protected Object doInBackground() throws Exception {
                 jProgressBar1.setIndeterminate(true);
                 jLabel1.setHorizontalAlignment(SwingConstants.CENTER);
-                MainPage main = new MainPage();
+                main = new MainPage();
                 done();
                 Thread.sleep(2000);
                 main.setVisible(true);
@@ -53,6 +54,10 @@ public class Loading extends javax.swing.JFrame {
             }
         };
         sw.execute();
+    }
+    
+    public static MainPage getMainPage(){
+        return main;
     }
 
     /**

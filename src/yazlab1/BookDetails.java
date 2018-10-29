@@ -215,9 +215,7 @@ public class BookDetails extends javax.swing.JFrame {
     private void backbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backbtnActionPerformed
         // TODO add your handling code here:
         dispose();
-        Frame[] j = MainPage.getFrames();
-        System.out.println("Uzunluk:"+j.length);
-        j[1].setVisible(true);
+        Loading.getMainPage().setVisible(true);
     }//GEN-LAST:event_backbtnActionPerformed
 
     /**
