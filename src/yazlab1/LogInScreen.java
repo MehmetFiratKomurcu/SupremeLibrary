@@ -26,16 +26,18 @@ public class LogInScreen extends javax.swing.JFrame {
      * Creates new form LogInScreen
      */
     private static int user_id = 278862;
+
     public LogInScreen() {
         initComponents();
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
     }
-    
-    public void setUserId(int id){
+
+    public void setUserId(int id) {
         user_id = id;
     }
-    public static int getUserId(){
+
+    public static int getUserId() {
         return user_id;
     }
 
@@ -167,44 +169,56 @@ public class LogInScreen extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        if(!usernametf.getText().equals("") && !passwordtf.getText().equals("")){
+        if (!usernametf.getText().equals("") && !passwordtf.getText().equals("")) {
             try {
                 boolean userFlag = false;
+                boolean adminFlag = false;
                 YazLab1 yazlab = new YazLab1();
                 Connection conn = DriverManager.getConnection(yazlab.getHost(), yazlab.getUName(), yazlab.getUPass());
                 Statement stmt = conn.createStatement();
-                String bookQuery = String.format("SELECT count(*),user_id FROM bx_users WHERE username = '%s' AND password = '%s'"
-                        , usernametf.getText(), passwordtf.getText());
+                String bookQuery = String.format("SELECT count(*),user_id FROM bx_users WHERE username = '%s' AND password = '%s'",
+                        usernametf.getText(), passwordtf.getText());
                 //System.out.println(bookQuery);
                 ResultSet rs = stmt.executeQuery(bookQuery);
-                
+
                 while (rs.next()) {
-                    if(rs.getInt("count(*)") >= 1){
+                    if (rs.getInt("count(*)") >= 1) {
                         userFlag = true;
                         setUserId(rs.getInt("user_id"));
                     }
                 }
-                
-                rs.close();
-                conn.close();
-                
-                if(userFlag == true){
-                    dispose();
-                    new Loading().setVisible(true);
-                }else{
+
+                if (userFlag == true) {
+                    String adminQuery = String.format("SELECT count(*) FROM bx_admins WHERE user_id = '%s'", getUserId());
+                    rs = stmt.executeQuery(adminQuery);
+                    while (rs.next()) {
+                        if (rs.getInt("count(*)") >= 1) {
+                            adminFlag = true;
+                        }
+                    }
+                    if (adminFlag == true) {
+                        dispose();
+                        new AdminPanel().setVisible(true);
+                    } else {
+                        dispose();
+                        new Loading().setVisible(true);
+                    }
+                } else {
                     JOptionPane.showMessageDialog(null, "Username or password is invalid, please try it again. "
                             + "If you're not a member, please click 'New User' button.");
                 }
-                
+                rs.close();
+                conn.close();
+
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(LogInScreen.class.getName()).log(Level.SEVERE, null, ex);
             } catch (SQLException ex) {
                 Logger.getLogger(LogInScreen.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }else{
+        } else {
             JOptionPane.showMessageDialog(null, "Please enter your username and password.");
         }
-        
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

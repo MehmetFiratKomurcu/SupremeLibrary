@@ -23,6 +23,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.text.BadLocationException;
 
 /**
  *
@@ -33,13 +34,17 @@ public class BookDetails extends javax.swing.JFrame {
     /**
      * Creates new form BookDetails
      */
-    private String receivedIsbn;
+    private static String receivedIsbn;
 
     public BookDetails() {
 
     }
 
-    public BookDetails(String isbn) throws SQLException, ClassNotFoundException, MalformedURLException, IOException {
+    public static String getReceivedIsbn() {
+        return receivedIsbn;
+    }
+
+    public BookDetails(String isbn) throws ClassNotFoundException, SQLException {
         initComponents();
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
@@ -58,12 +63,24 @@ public class BookDetails extends javax.swing.JFrame {
             bookauthortf.setText(rs.getString("book_author"));
             yearofpublicationtf.setText(rs.getString("year_of_publication"));
             publishertf.setText(rs.getString("publisher"));
-            URL url = new URL(rs.getString("image_url_m"));
-            System.out.println(url);
-            BufferedImage img = ImageIO.read(url);
-            ImageIcon icon = new ImageIcon(img);
-            JLabel label = new JLabel(icon);
-            jPanel1.add(label);
+            URL url;
+            try {
+                url = new URL(rs.getString("image_url_m"));
+                BufferedImage img = ImageIO.read(url);
+                ImageIcon icon = new ImageIcon(img);
+                JLabel label = new JLabel(icon);
+                jPanel1.add(label);
+            } catch (MalformedURLException ex) {
+                Logger.getLogger(BookDetails.class.getName()).log(Level.SEVERE, null, ex);
+                ImageIcon icon = new ImageIcon("img/noimage.png");
+                JLabel label = new JLabel(icon);
+                jPanel1.add(label);
+            } catch (IOException ex) {
+                Logger.getLogger(BookDetails.class.getName()).log(Level.SEVERE, null, ex);
+                ImageIcon icon = new ImageIcon("img/noimage.png");
+                JLabel label = new JLabel(icon);
+                jPanel1.add(label);
+            }
         }
 
         rs.close();
@@ -129,6 +146,11 @@ public class BookDetails extends javax.swing.JFrame {
         jPanel1.setLayout(new javax.swing.OverlayLayout(jPanel1));
 
         readbtn.setText("Read This Book");
+        readbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                readbtnActionPerformed(evt);
+            }
+        });
 
         backbtn.setText("Back");
         backbtn.addActionListener(new java.awt.event.ActionListener() {
@@ -217,6 +239,18 @@ public class BookDetails extends javax.swing.JFrame {
         dispose();
         Loading.getMainPage().setVisible(true);
     }//GEN-LAST:event_backbtnActionPerformed
+
+    private void readbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_readbtnActionPerformed
+        // TODO add your handling code here:
+        dispose();
+
+        try {
+            new ReadBook().setVisible(true);
+        } catch (BadLocationException ex) {
+            Logger.getLogger(BookDetails.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_readbtnActionPerformed
 
     /**
      * @param args the command line arguments

@@ -214,6 +214,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Read This Book"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="readbtnActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="backbtn">
       <Properties>

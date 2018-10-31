@@ -59,12 +59,14 @@ public class MainPage extends javax.swing.JFrame {
     ArrayList<String[]> isbnAndRatings = new ArrayList<String[]>();
     static double mainRowSize = 10.0;
     JTable recoveryMainTable;
+    public final String noImagePath = "img/noimage.png";
 
     public MainPage() throws SQLException {
         initComponents();
         String refreshPath = "img/refresh.png";
         String homePath = "img/home.png";
         String logOffPath = "img/logoff.png";
+        
         ImageIcon icon = new ImageIcon(refreshPath);
         refreshlbl.setIcon(icon);
         icon = new ImageIcon(homePath);
@@ -137,8 +139,6 @@ public class MainPage extends javax.swing.JFrame {
                         Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (ClassNotFoundException ex) {
                         Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (IOException ex) {
-                        Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             }
@@ -167,19 +167,22 @@ public class MainPage extends javax.swing.JFrame {
 
                     while (rs.next()) {
                         URL url;
+                        JLabel lbl = new JLabel();
                         try {
                             url = new URL(rs.getString("image_url_s"));
                             BufferedImage img = ImageIO.read(url);
                             ImageIcon icon = new ImageIcon(img);
-                            JLabel lbl = new JLabel();
                             lbl.setIcon(icon);
-                            model.addRow(new Object[]{rs.getString("isbn"), rs.getString("book_title"), rs.getString("book_author"), lbl});
                         } catch (MalformedURLException ex) {
                             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+                            ImageIcon icon = new ImageIcon(noImagePath);
+                            lbl.setIcon(icon);
                         } catch (IOException ex) {
                             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+                            ImageIcon icon = new ImageIcon(noImagePath);
+                            lbl.setIcon(icon);
                         }
-
+                        model.addRow(new Object[]{rs.getString("isbn"), rs.getString("book_title"), rs.getString("book_author"), lbl});
                         MainTable.getColumn("Title").setCellRenderer(new WordWrapCellRenderer());
                         MainTable.getColumn("Image").setCellRenderer(new LabelRenderer());
                         MainTable.getColumnModel().getColumn(0).setMinWidth(0);
@@ -233,18 +236,22 @@ public class MainPage extends javax.swing.JFrame {
                     ResultSet rs2 = stmt2.executeQuery(imageQuery);
                     rs2.next();
                     URL url;
+                    JLabel lbl = new JLabel();
                     try {
                         url = new URL(rs2.getString("image_url_s"));
                         BufferedImage img = ImageIO.read(url);
                         ImageIcon icon = new ImageIcon(img);
-                        JLabel lbl = new JLabel();
                         lbl.setIcon(icon);
-                        model.addRow(new Object[]{rs2.getString("isbn"), rs2.getString("book_title"), rs2.getString("book_author"), lbl});
                     } catch (MalformedURLException ex) {
                         Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+                        ImageIcon icon = new ImageIcon(noImagePath);
+                        lbl.setIcon(icon);
                     } catch (IOException ex) {
                         Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+                        ImageIcon icon = new ImageIcon(noImagePath);
+                        lbl.setIcon(icon);
                     }
+                    model.addRow(new Object[]{rs2.getString("isbn"), rs2.getString("book_title"), rs2.getString("book_author"), lbl});
                     RecommendTable.getColumn("Title").setCellRenderer(new WordWrapCellRenderer());
                     RecommendTable.getColumn("Image").setCellRenderer(new LabelRenderer());
                     RecommendTable.getColumnModel().getColumn(0).setMinWidth(0);
@@ -273,8 +280,6 @@ public class MainPage extends javax.swing.JFrame {
                         Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (ClassNotFoundException ex) {
                         Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (IOException ex) {
-                        Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             }
@@ -298,18 +303,22 @@ public class MainPage extends javax.swing.JFrame {
                 ResultSet rs2 = stmt2.executeQuery(imageQuery);
                 rs2.next();
                 URL url;
+                JLabel lbl = new JLabel();
                 try {
                     url = new URL(rs2.getString("image_url_s"));
                     BufferedImage img = ImageIO.read(url);
                     ImageIcon icon = new ImageIcon(img);
-                    JLabel lbl = new JLabel();
-                    lbl.setIcon(icon);
-                    model.addRow(new Object[]{isbnValue, rs2.getString("book_title"), lbl});
+                    lbl.setIcon(icon);  
                 } catch (MalformedURLException ex) {
                     Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+                    ImageIcon icon = new ImageIcon(noImagePath);
+                    lbl.setIcon(icon);
                 } catch (IOException ex) {
                     Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+                    ImageIcon icon = new ImageIcon(noImagePath);
+                    lbl.setIcon(icon);
                 }
+                model.addRow(new Object[]{isbnValue, rs2.getString("book_title"), lbl});
                 NewBooksTable.getColumn("Title").setCellRenderer(new WordWrapCellRenderer());
                 NewBooksTable.getColumn("Image").setCellRenderer(new LabelRenderer());
                 NewBooksTable.getColumnModel().getColumn(0).setMinWidth(0);
@@ -333,9 +342,7 @@ public class MainPage extends javax.swing.JFrame {
                             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
                         } catch (ClassNotFoundException ex) {
                             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
-                        } catch (IOException ex) {
-                            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
-                        }
+                        } 
                     }
                 }
             });
@@ -365,19 +372,22 @@ public class MainPage extends javax.swing.JFrame {
                 ResultSet rs2 = stmt2.executeQuery(imageQuery);
                 rs2.next();
                 URL url;
+                JLabel lbl = new JLabel();
                 try {
                     url = new URL(rs2.getString("image_url_s"));
                     BufferedImage img = ImageIO.read(url);
                     ImageIcon icon = new ImageIcon(img);
-                    JLabel lbl = new JLabel();
                     lbl.setIcon(icon);
-                    model.addRow(new Object[]{isbnValue, rs2.getString("book_title"), lbl, bookRatingValue});
                 } catch (MalformedURLException ex) {
                     Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+                    ImageIcon icon = new ImageIcon(noImagePath);
+                    lbl.setIcon(icon);
                 } catch (IOException ex) {
                     Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+                    ImageIcon icon = new ImageIcon(noImagePath);
+                    lbl.setIcon(icon);
                 }
-
+                model.addRow(new Object[]{isbnValue, rs2.getString("book_title"), lbl, bookRatingValue});
                 PopularBooksTable.getColumn("Title").setCellRenderer(new WordWrapCellRenderer());
                 PopularBooksTable.getColumn("Image").setCellRenderer(new LabelRenderer());
                 PopularBooksTable.getColumnModel().getColumn(0).setMinWidth(0);
@@ -403,9 +413,7 @@ public class MainPage extends javax.swing.JFrame {
                             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
                         } catch (ClassNotFoundException ex) {
                             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
-                        } catch (IOException ex) {
-                            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
-                        }
+                        } 
                     }
                 }
             });
@@ -435,18 +443,22 @@ public class MainPage extends javax.swing.JFrame {
                 ResultSet rs2 = stmt2.executeQuery(imageQuery);
                 rs2.next();
                 URL url;
+                JLabel lbl = new JLabel();
                 try {
                     url = new URL(rs2.getString("image_url_s"));
                     BufferedImage img = ImageIO.read(url);
                     ImageIcon icon = new ImageIcon(img);
-                    JLabel lbl = new JLabel();
                     lbl.setIcon(icon);
-                    model.addRow(new Object[]{isbnValue, rs2.getString("book_title"), lbl, bookRatingValue});
                 } catch (MalformedURLException ex) {
                     Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+                    ImageIcon icon = new ImageIcon(noImagePath);
+                    lbl.setIcon(icon);
                 } catch (IOException ex) {
                     Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+                    ImageIcon icon = new ImageIcon(noImagePath);
+                    lbl.setIcon(icon);
                 }
+                model.addRow(new Object[]{isbnValue, rs2.getString("book_title"), lbl, bookRatingValue});
                 BestBooksTable.getColumn("Title").setCellRenderer(new WordWrapCellRenderer());
                 BestBooksTable.getColumn("Image").setCellRenderer(new LabelRenderer());
                 BestBooksTable.getColumnModel().getColumn(0).setMinWidth(0);
@@ -471,8 +483,6 @@ public class MainPage extends javax.swing.JFrame {
                         } catch (SQLException ex) {
                             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
                         } catch (ClassNotFoundException ex) {
-                            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
-                        } catch (IOException ex) {
                             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }

@@ -236,14 +236,20 @@ public class AddBook extends javax.swing.JFrame {
                     while (rs.next()) {
                         if (Integer.parseInt(rs.getString("row")) >= 5) {
                             System.out.println(rs.getString("row"));
-                            String deleteQuery = String.format("DELETE FROM bx_last_added_books LIMIT 1");
+                            String deleteQuery = String.format("DELETE FROM bx_last_added_books ORDER BY date_added ASC LIMIT 1");
                             stmt.executeUpdate(deleteQuery);
                         }
                     }
                     rs.close();
                     Statement stmt3 = conn.createStatement();
-                    insertQuery = String.format("INSERT INTO bx_last_added_books(isbn) VALUES('%s')", isbntf.getText());
+                    java.util.Date dt = new java.util.Date();
+                    java.text.SimpleDateFormat sdf
+                            = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+                    String currentTime = sdf.format(dt);
+                    insertQuery = String.format("INSERT INTO bx_last_added_books(isbn,date_added) VALUES('%s','%s')", isbntf.getText(), currentTime);
                     stmt3.executeUpdate(insertQuery);
+                    JOptionPane.showMessageDialog(null, "Book has successfully added.");
                 }
                 conn.close();
             } else {
